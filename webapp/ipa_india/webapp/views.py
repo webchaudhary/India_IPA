@@ -51,7 +51,9 @@ def addFeature(request):
     if request.method == "POST" and request.accepts('text/html'):
         name = request.POST.get('name')
         geomstr = request.POST.get('geom')
+        state = request.POST.get('state', 'NA')
         print("name",name)
+        print("state",state)
         if name and geomstr:
     
             geom = GEOSGeometry(geomstr)
@@ -59,7 +61,7 @@ def addFeature(request):
                 geom = MultiPolygon([geom])
             if type(geom) == MultiPolygon:
                 try:
-                    ar = Area(name=name, geom=geom, user=request.user)
+                    ar = Area(name=name, geom=geom, user=request.user, state=state)
                     ar.save()
                     return JsonResponse({"result": "Feature saved",
                                          "featid": ar.id},
@@ -156,16 +158,15 @@ def addLayer(request):
 def getReport(request):
     if request.method == "POST" and request.accepts('text/html'):
         areaid = request.POST.get('id')
-        start_yr = request.POST.get('start_yr')
         start_month = request.POST.get('start_month')
-        end_yr = request.POST.get('end_yr')
         end_month = request.POST.get('end_month')
         precip = request.POST.get('precip')
         et = request.POST.get('et')
         lcc = request.POST.get('lcc')
+        
         myarea = Area.objects.get(id__exact=areaid)
         current_user = request.user.email
-        tsk = report_basin.delay(areaid, start_yr,start_month,end_yr, end_month, precip, et,lcc, current_user)
+        tsk = report_basin.delay(areaid,start_month, end_month, precip, et,lcc, current_user)
         tskhist = TaskHistory(user=request.user, area=myarea, task=tsk.id)
         tskhist.save()
         #"job id {}".format(tsk.id)

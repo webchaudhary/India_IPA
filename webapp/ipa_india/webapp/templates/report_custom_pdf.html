@@ -783,7 +783,7 @@
     </div>
     <h1>Irrigation Performance Assessment Report</h1>
     <address>
-      {{ area }} - {{ stats.st }} to {{ stats.sp }}
+      {{ area }} - {{ stats.st_yr }} to {{ stats.end_yr }}
     </address>
 
   </article>
@@ -848,6 +848,7 @@
   <article id="contents">
     <h2>Table of contents</h2>
     <ul>
+      <li><a href="#summary-title"></a></li>
       <li><a href="#study-title"></a></li>
       <li><a href="#precipitation-title"></a></li>
       <!-- </ul> -->
@@ -857,12 +858,46 @@
       <li><a href="#temporal-title"></a></li>
       <li><a href="#land-title"></a></li>
       <li><a href="#trend-title"></a></li>
+      {% if stats.et == "wapor2" or stats.et == "wapor3" %}
       <li><a href="#partitioning-title"></a></li>
+      {% endif %}
       <li><a href="#waterp-title"></a></li>
-
+      <li><a href="#waterd-title"></a></li>
+      <li><a href="#waters-title"></a></li>
+      <li><a href="#climate-title"></a></li>
+      <li><a href="#waterstorage-title"></a></li>
       <li><a href="#data-title"></a></li>
       <li><a href="#annex-title"></a></li>
     </ul>
+  </article>
+
+  <article id="summary">
+    <h2 id="summary-title">Findings summary</h2>
+
+    <table class="table table-bordered table-responsive">
+
+      <tr>
+        <td>Study Area</td>
+        <td>{{ area }}</td>
+      </tr>
+      <tr>
+        <td>State</td>
+        <td>{{ stats.state }}</td>
+      </tr>
+      <tr>
+        <td>Assessment Season</td>
+        <td>{{ stats.st_mo }} to {{ stats.end_mo }}</td>
+      </tr>
+      <tr>
+        <td>Assessment Period</td>
+        <td>{{ stats.st_yr }} - {{ stats.end_yr }}</td>
+      </tr>
+      <tr>
+        <td>Command Area</td>
+        <td>{{ stats.area }} Sq.Km</td>
+      </tr>
+    </table>
+
   </article>
 
   <article id="study">
@@ -909,7 +944,7 @@
     <p>
       <img src="{{base_url}}/media/{{job}}/lc.png" alt="" style="width: 100%; margin-top: 20px;">
 
-    <p class="imgTxt" style="text-align: center;"><span>Figure 3</span> Land cover map (Copernicus) of study area <a
+    <p class="imgTxt" style="text-align: center;"><span>Figure 3</span> Land cover map (NRSC) of study area <a
         href="{{base_url}}/media/{{job}}/LC.tif">Download data</a>
     </p>
     </p>
@@ -935,8 +970,8 @@
     <p>
       For estimating precipitation in the study area,the remote sensing based {{ stats.pcp }} data is used. Mean annual
       P over the basin is reported to be {{ stats.p }} mm/year. <em>Figure 4</em> shows the distribution of P over the
-      study area. P values in this map represent the average annual P for the study period of {{ stats.st }} - {{
-      stats.sp }}.
+      study area. P values in this map represent the average annual P for the study period of {{ stats.st_yr }} - {{
+      stats.end_yr }}.
     </p>
 
     <img src="{{base_url}}/media/{{job}}/pcp.png" alt="" style="width: 100%; margin-top: 10px;">
@@ -998,7 +1033,7 @@
     </p>
 
     <p>
-      In figure 6, ETa anomaly refers to the variation of ETa in {{ stats.sp }} from the long term ETa. ETa anomaly is
+      In figure 6, ETa anomaly refers to the variation of ETa in {{ stats.end_yr }} from the long term ETa. ETa anomaly is
       computed by computing the percentage change in ETa with respect to the long term median. Higher the percentage (>
       100), there was positive change in ETa values, lower values represent the decrease in ETa values. The method is
       explained <a href="https://www.mdpi.com/1424-8220/20/7/1915">here</a>.
@@ -1069,14 +1104,14 @@
     </h3> -->
 
     <p>
-      In this section temporal variation of ETa, P and P-ETa for the years {{ stats.st }} - {{ stats.sp }} is analysed.
+      In this section temporal variation of ETa, P and P-ETa for the years {{ stats.st_yr }} - {{ stats.end_yr }} is analysed.
       <em>Figure 9</em> shows the interannual variability of rainfall over the study area.
     </p>
 
     <img src="{{base_url}}/media/{{job}}/pcpbar1.png" alt="" style="width: 100%; margin-top: 10px;" class="center">
 
     <p class="imgTxt" style="text-align: center;"><span>Figure 9</span> Annual P ({{ stats.pcp }}) in mm/year over the
-      study area from {{ stats.st }} to {{ stats.sp }} </p>
+      study area from {{ stats.st_yr }} to {{ stats.end_yr }} </p>
     <p>
       Each bar represents the average precipitation over the study area for the indicated years in mm. The bar graphs
       are computed using the products - {{ stats.pcp }}. In a multi year analysis (>6 yr), the years with higher P are
@@ -1092,7 +1127,7 @@
     <img src="{{base_url}}/media/{{job}}/pcpbar2.png" alt="" style="width: 100%;margin-top: 20px;" class="center">
 
     <p class="imgTxt" style="text-align: center;"><span>Figure 10</span> Comparison of Annual P ({{ stats.pcp }}) from
-      different products from {{ stats.st }} to {{ stats.sp }} <a
+      different products from {{ stats.st_yr }} to {{ stats.end_yr }} <a
         href="{{base_url}}/media/{{job}}/Pcomparison.csv">Download
         table</a>
     </p>
@@ -1111,7 +1146,7 @@
     <img src="{{base_url}}/media/{{job}}/etabar.png" alt="" style="width: 100%; margin-top: 20px;" class="center">
 
     <p class="imgTxt" style="text-align: center;"><span>Figure 11</span> Annual ETa ({{ stats.et }}) in mm/year over the
-      study area from {{ stats.st }} to {{ stats.sp }}
+      study area from {{ stats.st_yr }} to {{ stats.end_yr }}
     </p>
     <br>
 
@@ -1123,19 +1158,19 @@
     <img src="{{base_url}}/media/{{job}}/pminetbar.png" alt="" style="width: 100%; margin-top: 20px;" class="center">
 
     <p class="imgTxt" style="text-align: center;"><span>Figure 12</span> Annual P-ETa (mm/year) over the study area from
-      {{ stats.st }} to {{ stats.sp }} </p>
+      {{ stats.st_yr }} to {{ stats.end_yr }} </p>
 
     <p>
       In this plot, blue represents the precipitation excess and red represents the precipitation deficit. The temporal
       variation of water use by each land cover type in the study area is plotted in <strong>Figure 13</strong>. Each
       year is represented by uniques color in this plot. <hlt>Table 1</hlt> lists the yearly statistics of annual P and
-      ETa in mm/year and km<sup>3</sup>/year for the study period, {{ stats.st }} - {{ stats.sp }}.
+      ETa in mm/year and km<sup>3</sup>/year for the study period, {{ stats.st_yr }} - {{ stats.end_yr }}.
     </p>
 
     <img src="{{base_url}}/media/{{job}}/lcbaret.png" alt="" style="width: 100%; margin-top: 30px;" class="center">
 
     <p class="imgTxt" style="text-align: center;"><span>Figure 13</span> Temporal variation of ETa per land cover type
-      from {{ stats.st }} to {{ stats.sp }} computed using {{ stats.et }} & {{ stats.pcp }}
+      from {{ stats.st_yr }} to {{ stats.end_yr }} computed using {{ stats.et }} & {{ stats.pcp }}
     </p>
 
   </article>
@@ -1176,7 +1211,7 @@
 
     <p>
       The time series of Annual ETa and P give insights into the climatic impact on water availability and scarcity in
-      the study area. To understand the variation of ETa and P over the period from {{ stats.st }} - {{ stats.sp }},
+      the study area. To understand the variation of ETa and P over the period from {{ stats.st_yr }} - {{ stats.end_yr }},
       delta ETa and delta P were computed as a residual of long term averages. Delta ETa and P are plotted in <em>Figure
         15 & 16</em> with linear trend line showing increasing or decreasing trends in the anomalies.
     </p>
@@ -1269,7 +1304,7 @@
     <br>
     <p>
       <strong>Figure 22 & 23</strong> shows the spatial distribution of TBP & WPb respectively over cropland computed
-      from averaged annual maps for the period - {{ stats.st }} - {{ stats.sp }}.
+      from averaged annual maps for the period - {{ stats.st_yr }} - {{ stats.end_yr }}.
     </p>
 
     <img src="{{base_url}}/media/{{job}}/dmp.png" alt="" style="width: 100%; margin-top: 40px;" class="center">
@@ -1291,14 +1326,238 @@
       in kg/ha. Water productivity is mapped with a red to green gradient, red areas represents lower WPb and green
       areas represents higher WPb.
       <br>
-      The annual mean TBP and WPb over cropland for the period - {{ stats.st }} - {{ stats.sp }} can be downloaded
+      The annual mean TBP and WPb over cropland for the period - {{ stats.st_yr }} - {{ stats.end_yr }} can be downloaded
       <a href='{{base_url}}/media/{{job}}/wpbtable.csv' target="_blank">here</a>.
     </p>
 
   </article>
+  <article id="waterd">
+    <h2 id="waterd-title">Water Deficit Index (WDI)</h2>
+
+    <!-- <h3>
+      This is a little subtitle, here to explain what we are talking about
+    </h3> -->
+
+    <p>
+      Mapping WDI over cropland provide insights about lack of water availability spatially and support investment
+      decisions that aim at improving equity in service delivery across the cropped area. In this analysis the maximum
+      ETa computed from the univariate distribution of ETa over the cropland was used following the formula:
+    </p>
+    <i>WDI = 1 - (ETa / ETx)</i> <br>
+    <br>
+    Where ETx is the maximum ETa over cropland. <strong>Figure 24</strong> shows the spatial distribution of WDI over
+    the cropland.
+
+    <img src="{{base_url}}/media/{{job}}/rwd.png" alt="" style="width: 100%; margin-top: 30px;" class="center">
+
+    <p class="imgTxt" style="text-align: center;"><span>Figure 24</span> Water Deficit Index (WDI) over cropland in
+      study area <a href="{{base_url}}/media/{{job}}/WDI.tif">Download data</a>
+    </p>
+
+    <p>
+      WDI is mapped with a blue to red gradient, blue areas represents low water deficit and red areas represents higher
+      water deficit regions. Further long term monthly mean ETa and P from 2010 to 2020 were extracted and plotted
+      (<strong>Figure 25</strong>) to understand the monthly variation of ETa and P over the study area.
+    </p>
+    <img src="{{base_url}}/media/{{job}}/monthlyetabar.png" alt="" style="width: 100%; margin-top: 30px;"
+      class="center">
+    <p class="imgTxt" style="text-align: center;"><span>Figure 25</span> Monthly ETa ({{ stats.et }}) and P ({{
+      stats.pcp }}) distribution over the study area </p>
+
+  </article>
+  <article id="waters">
+    <h2 id="waters-title">Water Scarcity Indices</h2>
+
+    <!-- <h3>
+      This is a little subtitle, here to explain what we are talking about
+    </h3> -->
+    <p>
+      Water scarcity refers to a condition of imbalance between freshwater availability and demand where freshwater
+      demand exceeds availability. In this section severity of water scarcity experienced in the croplands of study area
+      is shown using three indices - Blue Water Scarcity (BWS), Green Water Scarcity (GWS) and Economic Water Scarcity
+      (EWS) as explained by <a href="https://www.science.org/doi/10.1126/sciadv.aaz6031"><strong>Rosa et.al
+          2020</strong></a>.
+    </p>
+
+    <p>
+      <b>Blue water scarcity</b>: When irrigation is unsustainable and renewable blue water availability is insufficient
+      to sustainably meet CWR. In these cases, irrigation impairs environmental flows and depletes freshwater stocks.
+      BWS has been defined as the ratio between societal blue water demand and renewable blue water availability
+    </p>
+
+    <p>
+      <b>Green water scarcity</b>: When green water is insufficient to sustain unstressed crop production and irrigation
+      is needed to boost yields. GWS can be defined as the ratio between irrigation water requirement (or “green water
+      deficit”) and the total CWR.
+    </p>
+
+    <p>
+      <b>Agricultural economic water scarcity</b>: When there is GWS but no BWS. There is renewable blue water to
+      irrigate but lack of economic or institutional capacity. Agricultural economically water scarce croplands are
+      underperforming rainfed croplands suitable for sustainable irrigation expansion.
+    </p>
+
+    <p>
+      In this report, maps showing number of months in a year cropland area are under BWS, GWS and EWS. <strong>Figure
+        26</strong> shows the spatial distribution of BWS over the cropland.
+    </p>
+    <img src="{{base_url}}/media/{{job}}/bws.png" alt="" style="width: 100%; margin-top: 40px;" class="center">
+    <p class="imgTxt" style="text-align: center;"><span>Figure 26</span> Blue Water Scarcity (BWS) map over cropland
+      <a href="{{base_url}}/media/{{job}}/BWS.tif">Download
+        data</a>
+    </p>
+    <p>
+
+      BWS is mapped with a yellow-orange-red gradient, where yellow represents area under BWS for 0 - 4 months in a
+      year, orange represents area under BWS for 4 - 8 months and red areas represents area under BWS for 8 - 12 months.
+      <strong>Figure 27</strong> shows the spatial distribution of GWS over the cropland.
+    </p>
+
+    <img src="{{base_url}}/media/{{job}}/gws.png" alt="" style="width: 100%; margin-top: 30px;" class="center">
+    <p class="imgTxt" style="text-align: center;"><span>Figure 27</span> Green Water Scarcity (GWS) map over cropland
+      <a href="{{base_url}}/media/{{job}}/GWS.tif">Download
+        data</a>
+    </p>
+
+    <p>
+      GWS is mapped with a blue-green gradient, where blue represents area under GWS for 0 - 4 months in a year, lighter
+      blue represents area under GWS for 4 - 8 months and green represents area under GWS for 8 - 12 months.
+      <strong>Figure 28</strong> shows the spatial distribution of EWS over the cropland.
+    </p>
+
+    <br />
+    <img src="{{base_url}}/media/{{job}}/ews.png" alt="" style="width: 100%; margin-top: 40px;" class="center">
+
+    <p class="imgTxt" style="text-align: center;"><span>Figure 28</span> Economic Water Scarcity (EWS) map over cropland
+      <a href="{{base_url}}/media/{{job}}/EWS.tif">Download
+        data</a>
+    </p>
+
+    <p>
+      EWS is mapped with a blue-purple gradient, where blue represents area under EWS for 0 - 4 months in a year,
+      lighter blue represents area
+      under GWS for 4 - 8 months and purple represents area under GWS for 8-12 months.<br>
+    </p>
+
+  </article>
+  <article id="climate">
+    <h2 id="climate-title">Climate Change future projections (2020 - 2060)</h2>
+
+    <!-- <h3>
+      This is a little subtitle, here to explain what we are talking about
+    </h3> -->
+
+    <p>
+      In this section, future trends of annual air temperature and precipitation were analyzed using climate change
+      projection data extracted for the {{ area }}. The period considered for the trend analysis is 2020 to 2060. Future
+      climate simulation data provided by the Coupled Model Intercomparison Project (CMIP) under World Climate Research
+      Programme (WCRP) is used for the trend analysis. CMIP is developed as a multi-institutional project to better
+      understand past, present and future climate changes arising from natural, unforced variability or in response to
+      changes in radiative forcing in a multi-model context. CMIP6 consists of the “runs” from around 100 distinct
+      climate models being produced across 49 different modelling groups.
+      For this analysis, data from the <a
+        href="https://gmd.copernicus.org/articles/12/4823/2019/gmd-12-4823-2019.html"><strong>Canadian Earth System
+          Model version 5 (CanESM5)</strong></a> model is used. CanESM5 is a global model developed to simulate
+      historical climate change and variability, to make centennial scale projections of future climate, and to produce
+      initialized seasonal and decadal.
+    </p>
+
+    <p>
+      Further trends of air temperature and precipitation under two Shared Socio-economic Pathways (SSP's) scenarios are
+      reported.The SSPs scenarios are complex, incorporating a range from very ambitious mitigation to ongoing growth in
+      emissions. The most ambitious mitigation scenario was specifically designed to align with the low end of the Paris
+      Agreement global temperature goal of holding the increase in global temperature to well below 2°C above
+      pre-industrial levels, and pursuing efforts to limit the increase to 1.5°C.
+    </p>
+
+    In this analysis, two scenarios are used: <br>
+    <br>
+    <b>SSP5-8.5</b> - Very high GHG (GreenHouse Gas) emissions and CO2 emissions triple by 2075 <br>
+    <b>SSP2-4.5</b> - where scenario is intermediate GHG emissions and CO2 emissions around current levels until 2050,
+    then falling but not reaching net zero by 2100.
+    <br>
+
+    A detailed overview on ssp scenarios are given <a
+      href="https://climate-scenarios.canada.ca/?page=cmip6-overview-notes"><strong>here</strong></a>.
+
+    <br>
+    For {{ area }}, under <b>SSP5-8.5</b> trend in air temperature is reported to be <b>{{ stats.t3 }}</b> with reported
+    slope of <b>{{ stats.sl3 }}</b> Degree Celsius (see <strong>Figure 29</strong>). <br>
+
+    <img src="{{base_url}}/media/{{job}}/figt3.png" alt="" style="width: 100%; margin-top: 30px;" class="center">
+
+    <p class="imgTxt" style="text-align: center;"><span>Figure 29</span> Yearly deviations from 2015-2020 mean for air
+      temperature under SSP-5 8.5 </p>
+    <p>
+      Under <b>SSP2-4.5</b> trend in air temperature is reported to be <b>{{ stats.t1 }}</b> with reported slope of
+      <b>{{ stats.sl1 }}</b> Degree Celsius(see <strong>Figure 31</strong>). <br>
+    </p>
+
+    <img src="{{base_url}}/media/{{job}}/figt1.png" alt="" style="width: 100%; margin-top: 30px;" class="center">
+
+    <p class="imgTxt" style="text-align: center;"><span>Figure 30</span> Yearly deviations from 2015-2020 mean for air
+      temperature under SSP-2 4.5 </p>
+    <p>
+      <br />
+      For {{ area }}, under <b>SSP5-8.5</b> trend in precipitation is reported to be <b>{{ stats.t4 }}</b> with reported
+      slope of <b>{{ stats.sl4 }}</b> mm/year (see <strong>Figure 31</strong>). <br>
+    </p>
+
+    <img src="{{base_url}}/media/{{job}}/figt4.png" alt="" style="width: 100%; margin-top: 30px;" class="center">
+
+    <p class="imgTxt" style="text-align: center;"><span>Figure 31</span> Yearly deviations from 2015-2020 mean for
+      precipitation under SSP-5 8.5
+    </p>
+
+    <p>
+      Under <b>SSP2-4.5</b> trend in precipitation is reported to be <b>{{ stats.t2 }}</b> with reported slope of <b>{{
+        stats.sl2 }}</b> mm/year(see <strong>Figure 32</strong>).<br>
+    </p>
+
+    <img src="{{base_url}}/media/{{job}}/figt2.png" alt="" style="width: 100%; margin-top: 30px;" class="center">
+
+    <p class="imgTxt" style="text-align: center;"><span>Figure 32</span> Yearly deviations from 2015-2020 mean for
+      precipitation under SSP-4 2.5 </p>
 
 
+    <p>
+      Trends were computed using Sen’s slope and its significance were tested using Mannkendal tests. A 5 year running
+      mean was applied to the time series.
+    </p>
 
+    {% if stats.area > 10000 %}
+  </article>
+  <article id="waterstorage">
+    <h2 id="waterstorage-title">Water storage variability</h2>
+
+    <!-- <h3>
+      This is a little subtitle, here to explain what we are talking about
+    </h3> -->
+
+    <p>
+      Anomaly in water storage change can be studied using data from Gravity Recovery and Climate Experiment (GRACE)
+      twin satellites. GRACE satellites made detailed measurements of Earth's gravity field and improved investigations
+      about Earth's water reservoirs, over land, ice and oceans. In this section, the GRACE data is used to plot water
+      storage changes in cm over the study area from 2002 to 2021.
+      <br>
+      The dataset used is the gridded monthly global water storage/height anomalies relative to a time-mean, derived
+      from GRACE and GRACE-FO and using the Mascon approach. The water storage/height anomalies are given in equivalent
+      water thickness units (cm). The solution provided here is derived from solving for monthly gravity field
+      variations in terms of geolocated spherical cap mass concentration functions, rather than global spherical
+      harmonic coefficients. <strong>Figure 33</strong> shows the change in water storage over the last two decades
+      computed as water storage/height anomalies relative to a time-mean.
+    </p>
+
+    <!-- {% if stats.area > 10000 %} -->
+    <img src="{{base_url}}/media/{{job}}/grace_fig.png" alt="" style="width: 100%; margin-top: 30px;" class="center">
+    <p class="imgTxt" style="text-align: center;"><span>Figure 33</span> Change in waterstorage (cm) from 2002 to 2021
+      (Source: GRACE data) <a href="{{base_url}}/media/{{job}}/gracetable.csv">Download
+        table</a></p>
+    <!-- {% endif %} -->
+    </p>
+    {% endif %}
+
+  </article>
   <article id="data">
     <h2 id="data-title">Data sources</h2>
 
@@ -1360,16 +1619,15 @@
 
         </table>
 
-      </div>
-      <div class="no-break">
+
         <p>Table 3 The mean annual P, ETa, P-ETa & ETr in km3/year for each land cover class from 2010 - 2021 in the
           {{ area }} computed using ssebop & chirps</p>
 
         <table class="table table-bordered table-responsive" id="csv3Root">
 
         </table>
-      </div>
 
+      </div>
 
       <div class="no-break">
         <p>Table 4 Open access data sources used in this analysis</p>
@@ -1391,9 +1649,7 @@
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.2.0/papaparse.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
-  <!-- Optional JavaScript; choose one of the two! -->
-  <!-- <script src="js/report.js"></script> -->
-  <!-- Option 1: Bootstrap Bundle with Popper -->
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
     crossorigin="anonymous"></script>

@@ -21,6 +21,7 @@ class Area(models.Model):
     """
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50, verbose_name=_("Area name"))
+    state = models.CharField(max_length=50, verbose_name=_("State name"))
     user = models.ForeignKey(User, verbose_name=("User uploaded the area"),
                              on_delete=models.CASCADE)
     geom = models.MultiPolygonField(srid=4326)
