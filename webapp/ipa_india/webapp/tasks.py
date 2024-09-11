@@ -66,11 +66,42 @@ def report_basin(self, area, start_month, end_month, precip, et,lcc,current_user
     start_month_name = calendar.month_name[int(start_month)]
     end_month_name = calendar.month_name[int(end_month)]
 
-    start_yr="2018"
-    end_yr="2023"
+
+    seasons_timerange = []
+
+    start_yr = '2018'
+    end_yr = '2023' if int(start_month) <= int(end_month) else '2022'
+
+    # Loop through each year in the range 2018 to 2023
+    for year in range(int(start_yr),int(end_yr)+1):
+        months_range = []
+
+        if int(start_month) > int(end_month):
+            # First, add the months from start_month to December of the current year
+            for month in range(int(start_month), 13):  # 13 because we want to include month 12 (December)
+
+                months_range.append(f"{year}_{month:02d}")
+            # Then, add the months from January to end_month of the next year
+            for month in range(1, int(end_month) + 1):
+                months_range.append(f"{year + 1}_{month:02d}")
+        else:
+            # If start_month <= end_month, just add the months within the same year
+            for month in range(int(start_month), int(end_month) + 1):
+                months_range.append(f"{year}_{month:02d}")
+        seasons_timerange.append(months_range)
+    
+
+    print("months_timerange:")
+    print(seasons_timerange)
+
+
 
     timerange = range(int(start_yr),int(end_yr)+1)
+
+
     years = list(timerange)
+
+
     years_str = [str(s) for s in years]
     jobid = self.request.id
     LC_ESA = os.path.join(settings.DATA_DIR, 'worldcover_ESA')
@@ -245,6 +276,30 @@ def report_basin(self, area, start_month, end_month, precip, et,lcc,current_user
             r.mask(raster="LC_studyarea1", maskcats=LC_code_mask, flags="i")
             grass.mapcalc('{r} = {a}'.format(r=f'LC_studyarea', a=f'LC_studyarea1'))
     r.mask(vector=vectname)
+
+
+
+
+#     # Define cropland_class as a list of strings
+#     cropland_class = ['2', '3', '4', '5', '6', '7']
+
+#     existing_classes = grass.read_command('r.stats', flags='n', input='LC_studyarea', nv='*').strip().splitlines()
+#     existing_classes = [str(cls) for cls in existing_classes]
+#     valid_classes = [cls for cls in cropland_class if cls in existing_classes]
+
+
+#     valid_cropland_class = ','.join(valid_classes)
+
+
+#     if valid_cropland_class:
+#            print(f'Valid classes: {valid_cropland_class}')
+#            r.mask(raster="LC_studyarea", maskcats=valid_cropland_class)
+#     else:
+#            print('No valid classes found to apply the mask.')
+
+
+
+
     #LC_stats_keys = list(LC_stats.keys())
     #x = [item for items in LC_stats_keys for item in items.split(",")]
     #LC_code_str = x[0::4]
@@ -516,7 +571,7 @@ def report_basin(self, area, start_month, end_month, precip, et,lcc,current_user
     plt.title('PCP - ETa', fontsize=12)
     plt.savefig(pminet, bbox_inches='tight',pad_inches = 0, dpi=100)
     
-    r.mask(raster="LC_studyarea", maskcats='5')
+    r.mask(raster="LC_studyarea", maskcats='2 thru 7')
     ## Saving table with Bio, ET and WP annual
     if et == 'wapor2' or et == 'wapor3':
             mapsdmp = [et + "_tbp_" + s for s in years_str]
@@ -599,7 +654,7 @@ def report_basin(self, area, start_month, end_month, precip, et,lcc,current_user
     eta_rf = grass.parse_command('r.univar', map=f'ETa_mean', flags='g')
     thrf = round(float(eta_rf['mean']), 0)
     print(f"Rainfed threshold is {thrf}")
-    r.mask(raster="LC_studyarea", maskcats='5')
+    r.mask(raster="LC_studyarea", maskcats='2 thru 7')
     grass.mapcalc('{r} = {a} * 0.8'.format(r=f'pcp_thrf', a=f'pcp_mean'))
     #grass.mapcalc('{r} = {a} - {b}'.format(r=f'ETb_irrig1', a=f'ETa_mean', b=thrf))
     grass.mapcalc('{r} = if({b} < {c}, {a} - {b}, {a} - {c})'.format(r=f'ETb_irrig1', a=f'ETa_mean', b=f'pcp_thrf', c=thrf))
@@ -610,10 +665,10 @@ def report_basin(self, area, start_month, end_month, precip, et,lcc,current_user
     r.mask(raster="LC_studyarea", maskcats='80')
     grass.mapcalc('{r} = {b} - {a}'.format(r=f'ETb_water', a=f'pcp_mean', b=f'ETa_mean'))
     r.mask(flags="r")
-    r.mask(raster="LC_studyarea", maskcats='5')
+    r.mask(raster="LC_studyarea", maskcats='2 thru 7')
     r.patch(input=["ETb_irrig", "ETb_water"], output="ETb_mean")
     """
-    r.mask(raster="LC_studyarea", maskcats='5')
+    r.mask(raster="LC_studyarea", maskcats='2 thru 7')
     ## RWD map ###
     eta_irri = grass.parse_command('r.univar', map=f'ETa_mean', flags='ge', percentile='98')
     thrwd = round(float(eta_irri['percentile_98']), 0)
@@ -622,15 +677,12 @@ def report_basin(self, area, start_month, end_month, precip, et,lcc,current_user
     #mean_eta_irri = round(float(eta_irri['mean']), 0)
     ## WPdmp map ##
     grass.mapcalc('{r} = {a} / ({b} * 10)'.format(r=f'WPdmp', b=f'ETa_mean', a='dmp_mean'))
-    #pcp_irri = grass.parse_command('r.univar', map=f'pcp_mean', flags='ge')
-    #mean_pcp_irri = round(float(pcp_irri['mean']), 0)
-    #dmp_irri = grass.parse_command('r.univar', map=f'dmp_mean', flags='ge')
-    #mean_dmp_irri = round(float(dmp_irri['mean']), 0)
-    #wp_irri = grass.parse_command('r.univar', map=f'WPdmp', flags='ge')
-    #mean_wp_irri = round(float(wp_irri['mean']), 0)
+
     r.mask(flags="r")
+
+
     g.region(vector=vectname, res=0.005)
-    r.mask(raster="LC_studyarea", maskcats='5')
+    r.mask(raster="LC_studyarea", maskcats='2 thru 7')
     grass.mapcalc('{r} = {a}'.format(r=f'bws', a='BlueWS'))
     grass.mapcalc('{r} = {a}'.format(r=f'gws', a='GreenWS'))
     grass.mapcalc('{r} = {a}'.format(r=f'ews', a='EconomicWS'))
@@ -690,7 +742,7 @@ def report_basin(self, area, start_month, end_month, precip, et,lcc,current_user
     
 
     # Partitioning E&T - Temporary
-    #r.mask(raster="LC_studyarea", maskcats='5')
+    #r.mask(raster="LC_studyarea", maskcats='2 thru 7')
     #grass.mapcalc('{r} = {a} * 0.4'.format(r=f'E_irrig', a=f'ETa_mean'))
     #grass.mapcalc('{r} = {a} * 0.6'.format(r=f'T_irrig', a=f'ETa_mean'))
     #r.mask(raster="LC_studyarea", maskcats='80')
@@ -731,7 +783,7 @@ def report_basin(self, area, start_month, end_month, precip, et,lcc,current_user
             r.out_gdal(input='E_mean', output=eatif)
             tatif = os.path.join(newdir, "Ta.tif")
             r.out_gdal(input='T_mean', output=tatif)
-            r.mask(raster="LC_studyarea", maskcats='5')
+            r.mask(raster="LC_studyarea", maskcats='2 thru 7')
             grass.mapcalc('{r} = {a}'.format(r=f'E_mean_crop', a=f'E_mean'))
             grass.mapcalc('{r} = {a}'.format(r=f'T_mean_crop', a=f'T_mean'))
             Ea=raster2numpy('E_mean_crop', mapset='job{}'.format(jobid))
@@ -1200,33 +1252,7 @@ def report_basin(self, area, start_month, end_month, precip, et,lcc,current_user
 
 
     
-    #maps_ssebop=grass.list_grouped(type=['raster'], pattern="ssebop_eta_y*")['data_annual']
-    # maps_ssebop = ["ssebop_eta_y" + s for s in years_str]
-    # ssebop=[]
-    # for i in maps_ssebop:
-            # stats = grass.parse_command('r.univar', map=i, flags='g')
-            # mean = int(round(float(stats['mean'])))
-            # ssebop.append(mean)
-    # print('ssebop:')
-    # print(ssebop)
-
-    # maps_ensembleet = ["enset_eta_y" + s for s in years_str]
-    # enset=[]
-    # for i in maps_ensembleet:
-            # stats = grass.parse_command('r.univar', map=i, flags='g')
-            # mean = round(float(stats['mean']), 0)
-            # enset.append(mean)
-    # print('ensemble:')
-    # print(enset)
-    
-    # maps_ensembleetglobal = ["ensetglobal_eta_y" + s for s in years_str]
-    # ensetglobal=[]
-    # for i in maps_ensembleetglobal:
-            # stats = grass.parse_command('r.univar', map=i, flags='g')
-            # mean = round(float(stats['mean']), 0)
-            # ensetglobal.append(mean)
-    # print('ensetglobal:')
-    # print(ensetglobal)
+ 
 
     ##ssebop_etpa_y2016
     maps_ssebopetr = ["ssebop_etpa_y" + s for s in years_str]
@@ -1555,7 +1581,7 @@ def report_basin(self, area, start_month, end_month, precip, et,lcc,current_user
     print(monthly_ndvi)
     monthly_ndvi_scaled = [float(x/10000) for x in monthly_ndvi]
     
-    r.mask(raster="LC_studyarea", maskcats='5')
+    r.mask(raster="LC_studyarea", maskcats='2 thru 7')
     monthly_ndvi_crop=[]
     for i in maps_monthly_ndvi:
             stats = grass.parse_command('r.univar', map=i, flags='g')
