@@ -97,21 +97,30 @@ def render_pdf(htmlfile2, jobid):
     table1path = os.path.join(settings.MEDIA_ROOT, jobid, 'Table1.csv')
     table2path = os.path.join(settings.MEDIA_ROOT, jobid, 'Table2.csv')
     table3path = os.path.join(settings.MEDIA_ROOT, jobid, 'Table3.csv')
-    table4path = os.path.join(settings.BASE_DIR, 'webapp/static/data', 'datasource.csv')
+    table4path = os.path.join(settings.MEDIA_ROOT, jobid, 'Table4.csv')
+    table5path = os.path.join(settings.BASE_DIR, 'webapp/static/data', 'datasource.csv')
+    table6path = os.path.join(settings.MEDIA_ROOT, jobid, 'Table_summary.csv')
+
     df_table_1 = pd.read_csv(table1path)
     df_table_2 = pd.read_csv(table2path)
     df_table_3 = pd.read_csv(table3path)
     df_table_4 = pd.read_csv(table4path)
+    df_table_5 = pd.read_csv(table5path)
+    df_table_6 = pd.read_csv(table6path)
     # Replace blank headers with empty strings
     df_table_1.columns = [col if not col.startswith('Unnamed') else '' for col in df_table_1.columns]
     df_table_2.columns = [col if not col.startswith('Unnamed') else '' for col in df_table_2.columns]
     df_table_3.columns = [col if not col.startswith('Unnamed') else '' for col in df_table_3.columns]
     df_table_4.columns = [col if not col.startswith('Unnamed') else '' for col in df_table_4.columns]
+    df_table_5.columns = [col if not col.startswith('Unnamed') else '' for col in df_table_5.columns]
+    df_table_6.columns = [col if not col.startswith('Unnamed') else '' for col in df_table_6.columns]
     # Convert the DataFrames to HTML tables with specified class and ID
     html_table_1 = df_table_1.to_html(index=False, classes='table table-bordered table-responsive', table_id='csv1Root', na_rep='')
     html_table_2 = df_table_2.to_html(index=False, classes='table table-bordered table-responsive', table_id='csv2Root', na_rep='')
     html_table_3 = df_table_3.to_html(index=False, classes='table table-bordered table-responsive', table_id='csv3Root', na_rep='')
-    html_table_4 = df_table_4.to_html(index=False, classes='table table-bordered table-responsive', table_id='csv6Root', na_rep='')
+    html_table_4 = df_table_4.to_html(index=False, classes='table table-bordered table-responsive', table_id='csv4Root', na_rep='')
+    html_table_5 = df_table_5.to_html(index=False, classes='table table-bordered table-responsive', table_id='csv6Root', na_rep='')
+    html_table_6 = df_table_6.to_html(index=False, classes='table table-bordered table-responsive', table_id='summary_table_root', na_rep='')
 
 
     with open(htmlfile2, 'r') as file:
@@ -121,13 +130,17 @@ def render_pdf(htmlfile2, jobid):
     table_element_1 = soup.find('table', {'id': 'csv1Root'})
     table_element_2 = soup.find('table', {'id': 'csv2Root'})
     table_element_3 = soup.find('table', {'id': 'csv3Root'})
-    table_element_4 = soup.find('table', {'id': 'csv6Root'})
+    table_element_4 = soup.find('table', {'id': 'csv4Root'})
+    table_element_5 = soup.find('table', {'id': 'csv6Root'})
+    table_element_6 = soup.find('table', {'id': 'summary_table_root'})
 
     # Replace the table content with the new HTML tables
     table_element_1.replace_with(BeautifulSoup(html_table_1, 'html.parser'))
     table_element_2.replace_with(BeautifulSoup(html_table_2, 'html.parser'))
     table_element_3.replace_with(BeautifulSoup(html_table_3, 'html.parser'))
     table_element_4.replace_with(BeautifulSoup(html_table_4, 'html.parser'))
+    table_element_5.replace_with(BeautifulSoup(html_table_5, 'html.parser'))
+    table_element_6.replace_with(BeautifulSoup(html_table_6, 'html.parser'))
 
     # Write the modified HTML back to the file
     report2path = os.path.join(settings.MEDIA_ROOT, jobid, 'report2.html')

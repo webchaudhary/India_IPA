@@ -22,7 +22,9 @@ h2 {
     padding: .2rem .5rem !important;
     margin-top: 10px;
 }
-
+.row{
+    --bs-gutter-x:"0px" !important
+}
 .header {
     background: rgba(0, 26, 38, 0.7) url(../imgs/header.jpg) center 50%;
     background-blend-mode: overlay;
@@ -56,7 +58,7 @@ h2 {
 }
 
 .logo_img img {
-    width: 300px;
+    width: 400px;
     /* height: 100%; */
 
 }
@@ -191,6 +193,62 @@ button:hover {
 
 
 
+.backToTopBtn {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    z-index: 1;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    border: none;
+    color: #cccccc;
+    border-radius: 100%;
+    transition: 0.5s;
+    cursor: pointer;
+  }
+  .backToTopBtn:not(:hover) {
+    background: #1f1f1f;
+  }
+  .backToTopBtn:hover {
+    background: #0f0f0f;
+  }
+  .backToTopBtn.active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .backToTopBtn:not(.active) {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .pdfReport {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    z-index: 1;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    border: none;
+    color: #cccccc;
+    border-radius: 100%;
+    transition: 0.5s;
+    cursor: pointer;
+  }
+  .pdfReport:not(:hover) {
+    background: #1f1f1f;
+  }
+  .pdfReport:hover {
+    background: #0f0f0f;
+  }
+  .pdfReport.active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
 
 
 @media (max-width: 891px) {

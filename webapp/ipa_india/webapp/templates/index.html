@@ -42,13 +42,16 @@
 </head>
 
 <body>
+  <div class="main_container">
+
+  </div>
 
   <div class="main_navbar">
     <div class="navbar_text">
       <h1>India IPA Dashboard</h1>
     </div>
     <div class="logo_container">
-      <img src="{% static 'imgs/World_Bank_Group_logo.png' %}" alt="logo">
+      <img src="{% static 'imgs/logo-light.png' %}" alt="logo">
     </div>
   </div>
 
@@ -80,7 +83,7 @@
             <div class="submenu  collapse " id="collapseExample">
               <div class="logo-name">
                 <h2>Base Layers</h2>
-                <i class="bi bi-x closeBtn"></i>
+
               </div>
               <div class="subsecstart">
                 <h4 class="heading">Base Layers</h4>
@@ -188,18 +191,18 @@
             {% if user.is_authenticated %}
             <a class="nav_link " data-toggle="collapse" role="button" aria-expanded="false"
               aria-controls="collapseExample">
-              <i class='bx bxs-map nav_icon step-4'></i>
+              <i class='bx bxs-map-pin nav_icon step-4'></i>
               <span class="nav_name">Select Area</span>
             </a>
 
             <div class="submenu  collapse " id="collapseExample">
               <div class="logo-name">
-                <h2>Add Area</h2>
-                <i class="bi bi-x closeBtn"></i>
+                <h2> Command Area</h2>
+
               </div>
 
 
-              <div class="subsecstart" style="background-color: #e6e6e6; padding: 5px;">
+              <div class="subsecstart">
                 <h4 class="heading">Select State</h4>
                 <div class="input-group">
                   <select class="form-select" id="selectState" aria-label="Example select with button addon">
@@ -209,7 +212,7 @@
               </div>
               <br />
 
-              <div style="background-color: #e6e6e6; padding: 5px;">
+              <div class="subsecstart">
                 <h4 class="heading">Select Command</h4>
                 <div class="input-group">
                   <select class="form-select" id="selectCommand" aria-label="Example select with button addon">
@@ -221,8 +224,8 @@
 
 
 
-              <button type="button" class="btn btn-primary m-1" data-bs-toggle="button" autocomplete="off"
-                title="Add feature to own areas" id="commandbound" style="width:100%" onclick="addBB()">Add</button>
+              <button type="button" class="btn_general" data-bs-toggle="button" autocomplete="off"
+                title="Add feature to own areas" id="commandbound" onclick="addBB()">Add</button>
 
 
 
@@ -234,7 +237,7 @@
               </div>
 
 
-              <div style="background-color: #e6e6e6; padding: 5px;">
+              <div class="subsecstart">
                 <h4 class="heading">Select your added areas</h4>
                 <div class="input-group">
 
@@ -257,14 +260,15 @@
             <div class="submenu  collapse " id="collapseExample">
               <div class="logo-name">
                 <h2>Data Products</h2>
-                <i class="bi bi-x closeBtn"></i>
+
               </div>
 
 
               <div class="subsecstart">
                 <h4 class="heading">Precipitation</h4>
                 <div class="input-group">
-                  <select disabled class="form-select" name="precip" id="precip" aria-label="Example select with button addon">
+                  <select disabled class="form-select" name="precip" id="precip"
+                    aria-label="Example select with button addon">
                     <option value="imd" selected>IMD</option>
                     <option value="chirps">Chirps</option>
                     <option value="gsmap">GsMAP</option>
@@ -272,55 +276,56 @@
                     <option value="ensind">Ensemble</option>
                   </select>
                 </div>
-                <div class="subsecstart">
-                  <h4 class="heading">Evapotranspiration</h4>
-                  <div class="input-group">
-                    <select disabled class="form-select" name="et" id="et" aria-label="Example select with button addon">
-                      <option value="wapor3" selected>WaPOR3</option>
-                      <option value="ssebop">SSebop</option>
-                      <option value="ensetglobal">Ensemble Global</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div class="subsecstart">
-                  <h4 class="heading">Land Use Land Cover </h4>
-                  <div class="input-group">
-                    <select class="form-select" name="lcc_map" id="lcc_map">
-                      <option value="LULC_250k_1516_epsg4326">2015/16</option>
-                      <option value="LULC_250k_1617_epsg4326">2016/17</option>
-                      <option value="LULC_250k_1718_epsg4326">2017/18</option>
-                      <option value="LULC_250k_2223_epsg4326" selected>2022/23</option>
-                    </select>
-                  </div>
-                </div>
-
               </div>
+              <div class="subsecstart">
+                <h4 class="heading">Evapotranspiration</h4>
+                <div class="input-group">
+                  <select disabled class="form-select" name="et" id="et" aria-label="Example select with button addon">
+                    <option value="wapor3" selected>WaPOR3</option>
+                    <option value="ssebop">SSebop</option>
+                    <option value="ensetglobal">Ensemble Global</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="subsecstart">
+                <h4 class="heading">Land Use Land Cover </h4>
+                <div class="input-group">
+                  <select class="form-select" name="lcc_map" id="lcc_map">
+                    <option value="LULC_250k_1516_epsg4326">2015/16</option>
+                    <option value="LULC_250k_1617_epsg4326">2016/17</option>
+                    <option value="LULC_250k_1718_epsg4326">2017/18</option>
+                    <option value="LULC_250k_2223_epsg4326" selected>2022/23</option>
+                  </select>
+                </div>
+              </div>
+
+
 
             </div>
 
             <a class="nav_link  " data-toggle="collapse" role="button" aria-expanded="false"
               aria-controls="collapseExample">
-              <i class='bx bxs-time nav_icon step-5'></i>
+              <i class='bx bxs-calendar nav_icon step-5'></i>
               <span class="nav_name">Time Range</span>
             </a>
             <div class="submenu  collapse" id="collapseExample">
               <div class="logo-name">
                 <h2>Time Range</h2>
-                <i class="bi bi-x closeBtn"></i>
+
               </div>
 
               <div class="subsecstart">
                 <h4 class="heading">Season start month</h4>
                 <div class="input-group">
                   <select class="form-select" name="startdate_month" id="startdate_month">
-                    <option value="01" selected>January</option>
+                    <option value="01">January</option>
                     <option value="02">February</option>
                     <option value="03">March</option>
                     <option value="04">April</option>
                     <option value="05">May</option>
                     <option value="06">June</option>
-                    <option value="07">July</option>
+                    <option value="07" selected>July</option>
                     <option value="08">August</option>
                     <option value="09">September</option>
                     <option value="10">October</option>
@@ -342,15 +347,14 @@
                     <option value="07">July</option>
                     <option value="08">August</option>
                     <option value="09">September</option>
-                    <option value="10">October</option>
+                    <option value="10" selected>October</option>
                     <option value="11">November</option>
-                    <option value="12" selected>December</option>
+                    <option value="12">December</option>
                   </select>
 
                 </div>
               </div>
-              <button class="btn btn-primary-rep" onclick="getReport()"
-                style="background-color:#0082E4; color: #fff; margin-top:1rem; width: 100%;">Get
+              <button class="btn_general" onclick="getReport()">Get
                 Report</button>
 
             </div>
@@ -366,7 +370,7 @@
             <div class="submenu  collapse " id="collapseExample">
               <div class="logo-name">
                 <h2>Previous Reports</h2>
-                <i class="bi bi-x closeBtn"></i>
+
               </div>
 
 
@@ -380,13 +384,37 @@
                 <!-- <h5>Previous Reports</h5> -->
                 <div style="overflow-y: auto; height:50vh; " class="w-100" id="previoustasks">
                 </div>
-                <button type="button" class="btn btn-light mt-3" onclick="getTasks()"
-                  style="background-color:#212529;  color: #ffffff; text-align: center; font-weight: 500; padding: 0.7rem; display: flex; align-items: center;">Refresh
-                  <i class='bx bx-refresh'
-                    style="font-size: 24px; text-align: center; margin-left: 0.5rem;"></i></button>
               </div>
+              <button type="button" class="btn_general" onclick="getTasks()">Refresh
+                <i class='bx bx-refresh' style="font-size: 24px; text-align: center; margin-left: 0.5rem;"></i></button>
+
             </div>
             {% endif %}
+
+            <a class="nav_link" data-toggle="collapse" role="button" aria-expanded="false"
+              aria-controls="collapseExample">
+              <i class='bx bxs-info-circle nav_icon step-8'></i>
+              <span class="nav_name">Info</span>
+            </a>
+            <div class="submenu  collapse " id="collapseExample">
+              <div class="logo-name">
+                <h2>Tool Overview</h2>
+
+              </div>
+
+
+
+              <div class="subsecstart">
+                <p>
+                  India IPA Dashboard automatically generates an Irrigation Performance Assessment report for any selected command area by the user. The tool make use of remotely sensed datasets to generate various components of water balance laid over to a report in html and pdf format.
+                </p>
+                
+              </div>
+            
+
+            </div>
+
+
             <!-- PREVIOUS REPORTS ENDS -->
           </div>
         </div>
@@ -413,9 +441,9 @@
           </button>
         </form>
 
-        <div class="wb-button " title="info" data-bs-toggle="modal" data-bs-target="#about-us-modal">
+        <!-- <div class="wb-button " title="info" data-bs-toggle="modal" data-bs-target="#about-us-modal">
           <i class="fas fa-info-circle step-8"></i>
-        </div>
+        </div> -->
         {% else %}
         <a href="{% url 'login' %}">
           <div class="wb-button " title="login" data-bs-toggle="modal">
@@ -424,10 +452,10 @@
         </a>
         {% endif %}
         {% if user.is_authenticated %}
-        <!-- <div class="wb-button" data-bs-toggle="modal" data-bs-target="#addLayer" title="Add new area from vector layer"
+        <div class="wb-button" data-bs-toggle="modal" data-bs-target="#addLayer" title="Add new area from vector layer"
           id="addlayerbtn">
           <i class="fas fa-layer-group step-2"></i>
-        </div> -->
+        </div>
         <div class="wb-button" title="Draw a new area" data-bs-toggle="button" autocomplete="off" id="addarea">
           <i class="fas fa-map-marked step-3"></i>
         </div>
@@ -438,7 +466,7 @@
 
     <!-- More Features -->
     <div class="toogleBtn moreFeatures">
-      <div class="boxes" id="featuresBox">
+      <div class="boxes box-nd" id="featuresBox">
         <div class="moreIcons">
           <button type="button" class="btn btn-primary fas fa-ruler d-flex justify-content-center"
             title="Distance Measurement" data-bs-toggle="button" id="distance_measurement" geomType="LineString">
@@ -494,7 +522,7 @@
     </div>
 
 
-    <div class="modal fade" id="deleteReport-modal" tabindex="-1" role="dialog" aria-labelledby="deleteReportLabel"
+    <div class="modal fade"  id="deleteReport-modal" tabindex="-1" role="dialog" aria-labelledby="deleteReportLabel"
       aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
@@ -516,7 +544,7 @@
 
 
     <!-- Add New Area Modal -->
-    <!-- <div class="modal fade" id="addLayer" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
+    <div class="modal fade" id="addLayer" tabindex="-1" role="dialog" aria-labelledby="addModalLabel"
       aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -536,7 +564,7 @@
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
 
     <!-- Add Digitizing Modal -->
     <div class="modal fade" id="drawModal" tabindex="-1" role="dialog" aria-labelledby="drawModalLabel"
@@ -568,7 +596,7 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">India IPA Dashboard</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle" >India IPA Dashboard</h5>
             <button type="button" class="btn btn-light close" data-bs-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -586,21 +614,23 @@
 
     </div>
 
-    <div class="legend_img_container" id="esa-legend"
-    style="display: none; border:1px solid #e5e5e5">
+    <div class="legend_img_container" id="esa-legend" style="display: none; border:1px solid #e5e5e5">
       <img src="{% static 'imgs/legend/worldcover_Legend.png' %}">
     </div>
 
     <div class="legend_img_container">
       <img src="{% static 'imgs/legend/nrsc_LULC250K.png' %}" id="nrsc_lulc-legend"
-      style="display: none; border:1px solid #e5e5e5">
+        style="display: none; border:1px solid #e5e5e5">
     </div>
 
-    <div class="legend_img_container" style="height: 250px; width: auto; display: none; border:1px solid #e5e5e5" id="wapor_aeti-legend">
+    <div class="legend_img_container" style="height: 250px; width: auto; display: none; border:1px solid #e5e5e5"
+      id="wapor_aeti-legend">
       <p>AETI (mm/year)</p>
-      <img style="width: auto;" src='https://geoserver.waterinag.org/geoserver/India/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&LAYER=India:India_AETI_6_yr_avg' alt='Legend' />
+      <img style="width: auto;"
+        src='https://geoserver.waterinag.org/geoserver/India/wms?REQUEST=GetLegendGraphic&VERSION=1.1.0&FORMAT=image/png&LAYER=India:India_AETI_6_yr_avg'
+        alt='Legend' />
 
-   
+
     </div>
 
 
@@ -953,7 +983,7 @@
       visible: false
     })
 
-    var wapor_aeti=new ol.layer.Tile({
+    var wapor_aeti = new ol.layer.Tile({
       source: new ol.source.TileWMS({
         url: 'https://geoserver.waterinag.org/geoserver/India/wms',
         params: { 'LAYERS': 'India:India_AETI_6_yr_avg', 'TRANSPARENT': true, },
@@ -1233,7 +1263,7 @@
           })
         ]),
       target: 'map',
-      layers: [otmlayer, worldcover, nrsc_lulc,wapor_aeti, streetMaplayer, sentinellayer, boundaryLayer, areavector, polyvector, commandvector, statesvector, basinvector, canalsvector, bobavector, measurevector],
+      layers: [otmlayer, worldcover, nrsc_lulc, wapor_aeti, streetMaplayer, sentinellayer, boundaryLayer, areavector, polyvector, commandvector, statesvector, basinvector, canalsvector, bobavector, measurevector],
       view: new ol.View({
         center: ol.proj.fromLonLat([78, 23]),
         minZoom: 4,
@@ -1459,7 +1489,7 @@
         sentinellayer.setVisible(false);
         streetMaplayer.setVisible(false);
         otmlayer.setVisible(false);
-      }else if (layername == 'wapor_aeti') {
+      } else if (layername == 'wapor_aeti') {
         $("#nrsc_lulc-legend").css("display", "none");
         $("#esa-legend").css("display", "none");
         $("#wapor_aeti-legend").css("display", "block");
@@ -1879,7 +1909,7 @@
       $.ajax({
         type: "POST",
         url: "/getreport",
-        data: { id: area, start_month: start_month,  end_month: end_month, precip: precip, et: et, lcc: lcc }
+        data: { id: area, start_month: start_month, end_month: end_month, precip: precip, et: et, lcc: lcc }
       }).done(function (msg) {
         $("#returnText").text("");
         $("#returnText").text(msg['result'] +
@@ -1954,7 +1984,7 @@
         });
       }
     }
-    
+
 
     window.addEventListener('resize', checkSize);
 
@@ -1967,7 +1997,7 @@
         $.ajax({
           type: "POST",
           url: "/addfeature",
-          data: { name: $("#featName").val(), state:$('#selectState option:selected').text(),geom: $("#featGeom").val() }
+          data: { name: $("#featName").val(), state: $('#selectState option:selected').text(), geom: $("#featGeom").val() }
         }).done(function (msg) {
           $("#drawModal").modal('hide');
           $("#returnText").text("");
@@ -2060,8 +2090,8 @@
           var tasks = '<h5 class="card-title text-center"></h5>'
           for (i = 0; i < msg['data'].length; i++) {
             tasks += '<div>' + msg['data'][i]['fields']['area'] + "<br>" + msg['data'][i]['fields']['data'].replace('T', ' ').split('.', 1) + "<br>" +
-              '<a href="/media/' + msg['data'][i]['fields']['task'] + '/index.html" target="_blank" class="btn btn-primary m-1">View</a>' +
-              '<a href="/media/' + msg['data'][i]['fields']['task'] + '/report.pdf" target="_blank" class="btn btn-primary m-1">PDF</a>' +
+              '<a href="/media/' + msg['data'][i]['fields']['task'] + '/index.html" target="_blank" class="btn m-1" style="background-color: #253347; color: white;">View</a>' +
+              '<a href="/media/' + msg['data'][i]['fields']['task'] + '/report.pdf" target="_blank" class="btn m-1" style="background-color: #253347; color: white;">PDF</a>' +
               // '<a onclick="deleteTaskhistory(' + msg['data'][i]['id'] + ')" class="btn btn-danger me-1">Delete</a></div> <hr>'
               '<a data-bs-toggle="modal" data-bs-target="#deleteReport-modal" data-taskid="' + msg['data'][i]['id'] + '" class="btn btn-danger me-1">Delete</a></div> <hr>'
 
