@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis:wght@200..800&family=Inter:wght@100..900&family=Open+Sans:wght@300;400;500;600;800&family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+
+a {
+    color: #23a592;
+}
+
+img {
+    max-width: 100%;
+}
+
+img {
+    width: 100%;
+}
+
+h2 {
+    color: #002740;
+}
+
+.alert{
+    padding: .2rem .5rem !important;
+    margin-top: 10px;
+}
+.row{
+    --bs-gutter-x:"0px" !important
+}
+.header {
+    background: rgba(0, 26, 38, 0.7) url(../imgs/header.jpg) center 50%;
+    background-blend-mode: overlay;
+    padding: 20vh 10vw;
+    background-size: cover;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header h2 {
+    color: white;
+    font-size: 60px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
+    font-weight: 900;
+    font-family: "Open sans", Helvetica, Arial;
+
+}
+
+.header p {
+    color: white;
+    font-size: 32px;
+    font-weight: 600;
+    font-family: "Open sans", Helvetica, Arial;
+    font-style: italic;
+}
+
+
+.logo_img {
+    /* width: 100%; */
+}
+
+.logo_img img {
+    width: 400px;
+    /* height: 100%; */
+
+}
+
+
+@media (min-width: 768px) {
+    .list-group{
+
+        position: -webkit-sticky;
+        background-color: whitesmoke;
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+        height: calc(100vh);
+        border-right: 1px solid rgba(0, 0, 0, .1);
+    }
+}
+.list-group{
+    -ms-flex-order: 0;
+    order: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, .1);
+}
+
+
+  
+  .list-group .scrollspy-link {
+
+    padding: 20px;
+    background-color: whitesmoke;
+    border-radius: 7px;
+    height: 100%;
+
+
+
+  }
+  
+  h4 {
+    color: #002740;
+  }
+  
+  .list-group-item.active,
+  .list-group-item:hover {
+    color: #002740;
+    background-color: unset;
+    border-color: #002740;
+    border-left: 5px solid #002740;
+  }
+  
+  .list-group-item:first-child {
+    border-top-left-radius: unset;
+    border-top-right-radius: unset;
+  }
+  
+  .list-group-item:last-child {
+    border-bottom-right-radius: unset;
+    border-bottom-left-radius: unset;
+  }
+
+  .list-group-item {
+    border: unset;
+    background-color: whitesmoke;
+  }
+  
+
+
+  
+.map {
+    height: 600px;
+    width: 100%;
+    margin: 0 auto;
+    border: 2px solid #939393;
+}
+
+.table_container {
+    width: 100%;
+    overflow-x: auto !important;
+}
+
+table {
+    border: none !important;
+    width: 100% !important;
+
+}
+
+
+
+table #dataHeading {
+    background-color: #98242b;
+    color: white;
+}
+
+table th {
+    text-align: center;
+    background-color: #002f54 !important;
+    color: white !important;
+    padding-left: 3px!important;
+}
+
+table td {
+    background-color: #ffd17b;
+    padding-left: 3px;
+
+
+}
+
+table td:first-child {
+    background: #98242b;
+    color: white;
+    padding-left: 3px;
+}
+
+table tr:last-child {
+    /* font-weight: bold; */
+}
+
+
+/* Download Button */
+button {
+    background: transparent;
+    border: none;
+    color: #00aeef;
+    text-decoration: underline;
+}
+
+button:hover {
+    background: #e27434;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    padding: 4px;
+}
+
+
+
+.backToTopBtn {
+    position: fixed;
+    bottom: 50px;
+    right: 50px;
+    z-index: 1;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    border: none;
+    color: #cccccc;
+    border-radius: 100%;
+    transition: 0.5s;
+    cursor: pointer;
+  }
+  .backToTopBtn:not(:hover) {
+    background: #1f1f1f;
+  }
+  .backToTopBtn:hover {
+    background: #0f0f0f;
+  }
+  .backToTopBtn.active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .backToTopBtn:not(.active) {
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .pdfReport {
+    position: fixed;
+    top: 50px;
+    right: 50px;
+    z-index: 1;
+    height: 50px;
+    width: 50px;
+    font-size: 20px;
+    border: none;
+    color: #cccccc;
+    border-radius: 100%;
+    transition: 0.5s;
+    cursor: pointer;
+  }
+  .pdfReport:not(:hover) {
+    background: #1f1f1f;
+  }
+  .pdfReport:hover {
+    background: #0f0f0f;
+  }
+  .pdfReport.active {
+    visibility: visible;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+
+@media (max-width: 891px) {
+
+    .header {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .header h2 {
+        font-size: 40px;
+
+    }
+
+    .header p {
+        font-size: 24px;
+
+    }
+
+    .logo_img {
+        margin-bottom: 20px;
+    }
+
+}

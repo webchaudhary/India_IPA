@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<title>Irrigation Performance Assessment Report</title>
+	<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css'>
+	<link rel="stylesheet"
+		href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/css/ol.css" type="text/css">
+
+	<!-- <link rel="stylesheet" href="./style.css"> -->
+	<link rel="stylesheet" type="text/css" href="/static/css/report_custom_wb.css">
+	<meta name="description" content="Report for area {{ area }}">
+
+
+</head>
+
+
+<body>
+
+	<button class="backToTopBtn"><i class="fas fa-angle-up"></i></button>
+	<a href="{{ settings.MEDIA_URL }}{{ job }}/report.pdf" target="_blank"> <button class="pdfReport"><i
+				class="fas fa-file-pdf"></i></button></a>
+
+	<div class="header">
+		<div class="">
+			<h2>Irrigation Performance <br /> Assessment Report</h2>
+			<p>{{ area }} - {{ stats.st_yr }} to {{ stats.end_yr }}</p>
+		</div>
+		<div class="logo_img">
+			<img src="/static/imgs/report_logo_light.png" alt="logo" />
+		</div>
+	</div>
+
+
+
+	<div class="row">
+		<div class="col-12 col-md-3 col-xl-2">
+
+			<div id="list-example" class="list-group">
+				<div class="scrollspy-link">
+					<a class="list-group-item list-group-item-action" href="#summary-title">Findings summary</a>
+					<a class="list-group-item list-group-item-action" href="#study-title">Study area</a>
+					<a class="list-group-item list-group-item-action" href="#agro_hydro-title">Key Agro-Hydrological
+						Parameters</a>
+
+
+					<a class="list-group-item list-group-item-action"
+						href="#evapotranspiration-title">Evapotranspiration</a>
+					<a class="list-group-item list-group-item-action" href="#blue_green_et">Partitioning ET green and
+						into ET Blue</a>
+
+
+					<a class="list-group-item list-group-item-action" href="#precipitation-title">Precipitation</a>
+
+					<a class="list-group-item list-group-item-action" href="#waterp-titl">Water and land
+						Productivity</a>
+					<a class="list-group-item list-group-item-action" href="#adequacy">Adequacy</a>
+					<a class="list-group-item list-group-item-action" href="#equity">Equity</a>
+
+					<a class="list-group-item list-group-item-action" href="#climate_change">Climate Change future
+						projections </a>
+					<a class="list-group-item list-group-item-action" href="#data-title">Data sources</a>
+					<a class="list-group-item list-group-item-action" href="#copyright">Copyright</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-md-9 col-xl-8 p-5 ">
+
+			<div data-bs-spy="scroll" data-bs-target="#list-example" data-bs-smooth-scroll="true"
+				class="scrollspy-example content" tabindex="0">
+
+				<section id="summary-title" class="mb-5">
+					<h2>Findings summary</h2>
+					<hr class="notop">
+
+					<div class="table_container">
+						<table class="table table-stripe">
+
+							<tr>
+								<td>Study Area</td>
+								<td>{{ area }}</td>
+							</tr>
+							<tr>
+								<td>State</td>
+								<td>{{ stats.state }}</td>
+							</tr>
+							<tr>
+								<td>Assessment Season</td>
+								<td>{{ stats.st_mo }} to {{ stats.end_mo }}</td>
+							</tr>
+							<tr>
+								<td>Assessment Period</td>
+								<td>{{ stats.st_yr }} - {{ stats.end_yr }}</td>
+							</tr>
+							<tr>
+								<td>Command Area</td>
+								<td>{{ stats.area }} Sq.Km</td>
+							</tr>
+						</table>
+
+
+						<h3>Summary table</h3>
+						<div class="table_container">
+							<table class="table table-striped" id="summary_table_root"></table>
+						</div>
+						<div class="alert alert-info"> Table 1: Summary Table <button type="submit"
+							onclick="window.open('annual_summary_table.csv')">Download table</button></div>
+
+
+
+					</div>
+				</section>
+
+				<section class="mb-5" id="study-title">
+					<h2>Study area</h2>
+					<hr class="notop">
+					<p class="description"> <strong>{{ area }}</strong> lies between
+						Longitudes: <strong>{{ stats.w }} - {{ stats.e }}</strong> and Latitudes: <strong>{{
+							stats.s }} - {{ stats.n }}</strong>. The total area is <strong>{{ stats.area }}
+							Sq.Km</strong>.
+						<br />
+
+						This report represent the growing season starting from {{stats.st_mo}} to {{stats.end_mo}},
+						hereafter assessment season, for the period of {{stats.st_yr}} to {{stats.end_yr}}.
+
+						<em>Figure 1</em>
+						below is an interactive map showing the study area boundary, with labels of major
+						places in the region.
+					</p>
+					<div id="map" class="map"></div>
+					<div class="alert alert-info"> Figure 1: Study area</div>
+
+
+				</section>
+
+				<section class="mb-5" id="agro_hydro-title">
+					<h2>Key Agro-Hydrological Parameters</h2>
+					<hr class="notop">
+					<p class="description">
+						<b>Land use: </b><br>
+						The land use map of the {{area}} irrigation scheme, derived from India's National Remote Sensing
+						Center
+						(NRSC) data, provides a detailed spatial representation of how different types of land are
+						utilized across the region. By utilizing satellite imagery, the map highlights various land use
+						categories such as agricultural areas (Kharif, Rabi, Zaid crops), plantations, fallow land, and
+						others. The major land cover types in the {{ area }} in {{ stats.lcc_year }} are <b>{{ stats.lc0 }}</b> and
+						<b>{{stats.lc1}}</b> covering an area of <b>{{ stats.lca0 }} Sq.Km</b> and <b>{{ stats.lca1 }}
+							Sq.Km</b> respectively. (Figure 2 and 3)
+					</p>
+
+					<p class="description">
+						Figure 2 illustrates the changing distribution of land use in the {{area}} irrigation scheme
+						over the
+						years, with categories such as Kharif Crop, Rabi Crop, Zaid Crop, Double/Triple Crop, Current
+						Fallow, and Plantation. Each bar represents a specific year, and the segments within the bars
+						depict the proportion of land allocated to each category. This visual allows for easy comparison
+						of how land use patterns have evolved over time, highlighting trends such as shifts in cropping
+						intensity, the expansion of plantations, or an increase in fallow land. The chart provides
+						insights into the agricultural dynamics and land management within the irrigation scheme.
+					</p>
+					<div style="{{ stats.webImg_style }}">
+						<img style="height: 100%; width: auto; justify-self: center" src="{{ settings.MEDIA_URL }}{{ job }}/lc.png" alt="">
+					</div>
+					<div class="alert alert-info"><span>Figure 2: </span> Land cover map (NRSC: {{ stats.lcc_year }}) of study area
+						<button type="submit" onclick="window.open('{{ settings.MEDIA_URL }}{{ job }}/LC.tif')">Download
+							data</button>
+					</div>
+
+
+					<img alt="Landcover" src="{{ settings.MEDIA_URL }}{{ job }}/pie.png" style="width: 45%;" />
+					<img alt="Legend" src="{{ settings.MEDIA_URL }}{{ job }}/leg.png" style="width: 45%;" />
+					<div class="alert alert-info"> <span>Figure 3: </span> Pie chart showing land cover area
+						distribution (NRSC: {{ stats.lcc_year }})</div>
+
+
+					<img src="{{base_url}}/media/{{job}}/lc_comp.png" alt="">
+					<div class="alert alert-info"><span>Figure 4: </span> Crop classes
+						+
+						Plantations from all available NRSC years
+					</div>
+
+
+				</section>
+
+
+
+				<section id="evapotranspiration-title" class="mb-5">
+					<h2>Evapotranspiration</h2>
+					<hr class="notop">
+					<p class="description">
+
+						<b>Evapotranspiration</b> <br>
+						The map illustrates the average evapotranspiration (ET) across the {{stats.area}} irrigation
+						scheme during the assessment season, averaged over the years {{stats.st_yr}} to
+						{{stats.end_yr}}, based on FAO WaPOR data. Evapotranspiration, measured in millimeters (mm),
+						reflects the combined water loss from soil evaporation and plant transpiration, serving as an
+						indicator of water consumption and availability for crops. Areas shown in red indicate low ET,
+						suggesting regions where crop water availability is limited, likely resulting in crop water
+						stress. Conversely, areas in blue represent high ET, signifying regions of higher water
+						consumption, often corresponding to areas with abundant water supply and more active vegetation.
+						This map provides critical insights into water use efficiency, helping to identify zones of
+						potential water stress and areas where water resources are being heavily utilized. The average
+						actual evapotranspiration (Eta) is {{ stats.eta }} mm.
+						<!-- during the assessment season ranging from X to Y mm.  -->
+					</p>
+
+
+					<div style="{{ stats.webImg_style }}">
+						<img style="height: 100%; width: auto; justify-self: center" src="{{ settings.MEDIA_URL }}{{ job }}/eta.png" alt="">
+					</div>
+					<div class="alert alert-info"><span>Figure 5: </span> Average ETa over the assessment season (FAO
+						WaPOR {{stats.st_yr}} - {{stats.end_yr}})<button type="submit"
+							onclick="window.open('{{ settings.MEDIA_URL }}{{ job }}/ETa.tif')">Download
+							data</button></div>
+
+					<p>
+						The stacked bar chart shows the total annual actual evapotranspiration (ETa) from
+						{{stats.st_yr}} to {{stats.end_yr}},
+						with each bar divided to highlight the portion of ETa occurring during the assessment season.
+						This visual representation allows for a clear comparison of overall water use each year, while
+						emphasizing the specific contribution of the assessment season to the total ETa.
+					</p>
+
+
+					<img src="{{ settings.MEDIA_URL }}{{ job }}/etabar.png" alt="">
+					<div class="alert alert-info"><span>Figure 6: </span> Total annual ET and ET of
+						assessment season from {{ stats.st_yr }} to {{ stats.end_yr }}
+					</div>
+
+
+					<p>
+						The Figure 7 presents the monthly average actual evapotranspiration (ETa) from January to
+						December, averaged over six years ({{stats.st_yr}} to {{stats.end_yr}}). This visual highlights
+						seasonal variations in
+						ETa, showing how water consumption fluctuates throughout the year. Peaks in ETa typically
+						correspond to periods of higher water demand due to increased crop growth, while lower ETa
+						values may indicate cooler seasons or reduced vegetation activity. This data provides valuable
+						insights into the seasonal water use patterns across the region.
+					</p>
+
+					{% if stats.plots_width > stats.plots_height %}
+					<div class="row">
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_01.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_02.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_03.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_04.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_05.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_06.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_07.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_08.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_09.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_10.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_11.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_12.png" alt="">
+						</div>
+					</div>
+					{% else %}
+					<div class="row">
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_01.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_02.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_03.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_04.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_05.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_06.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_07.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_08.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_09.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_10.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_11.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/wapor3_eta_avg_12.png" alt="">
+						</div>
+					</div>
+					{% endif %}
+
+
+					<div class="alert alert-info"><span>Figure 7: </span> Monthly average actual evapotranspiration
+						(ETa)
+						from January to December </div>
+
+
+					<em>Figure 8</em> shows the spatial distribution of the average seasonal ETr. The
+					average seasonal ETr in the study area is {{ stats.etr }} mm. The ETr values are mapped in
+					red-yellow-Blue gradient representing lower-mid-high reference evapotranspiration in
+					the study area.
+					<div style="{{ stats.webImg_style }}">
+						<img style="height: 100%; width: auto; justify-self: center" src="{{ settings.MEDIA_URL }}{{ job }}/etr.png" alt="">
+					</div>
+					<div class="alert alert-info"><span>Figure 8: </span> Average ETr over the study area <button
+							type="submit" onclick="window.open('{{ settings.MEDIA_URL }}{{ job }}/ETr.tif')">Download
+							data</button>
+					</div>
+
+
+					<br>
+					<br>
+
+
+
+				</section>
+
+				<section id="blue_green_et" class="mb-5">
+					<h2> Partitioning ET green and into ET Blue</h2>
+					<hr class="notop">
+
+					<p class="description">
+						Evapotranspiration (ET) can be classified into two components: Green ET and Blue ET, based on
+						the source of water used by crops and vegetation. Green ET refers to the water consumed through
+						evapotranspiration that originates from natural precipitation (rainfall). It is a critical
+						component in rain-fed agricultural systems and natural ecosystems, where water availability
+						depends entirely on rainfall. On the other hand, Blue ET represents water consumed through
+						evapotranspiration that comes from irrigation or other surface and groundwater sources, such as
+						rivers, lakes, or reservoirs. This is particularly important in irrigated agricultural systems
+						where artificial water input is required to meet crop water demands.
+						<br>
+						Figure 9 depicts the Blue ET for the study area during the assessment season, highlighting the
+						regions where irrigation plays a significant role in fulfilling crop water requirements. This
+						separation between Green and Blue ET helps in understanding how much of the water consumption in
+						the area is being met through rainfall versus irrigation, which is essential for sustainable
+						water management and assessing the efficiency of irrigation systems
+
+					</p>
+					<div style="{{ stats.webImg_style }}">
+						<img style="height: 100%; width: auto; justify-self: center" src="{{ settings.MEDIA_URL }}{{ job }}/etb.png" alt="">
+					</div>
+					<div class="alert alert-info"><span>Figure 9: </span> Average blue ET(mm) over the cropland
+						<button type="submit"
+							onclick="window.open('{{ settings.MEDIA_URL }}{{ job }}/ETb.tif')">Download
+							data</button>
+					</div>
+
+
+
+
+
+					<p>
+						Figure 10 shows the histogram of ET specifically for agricultural areas in the study region
+						during the assessment season. This histogram provides insights into the distribution of ET
+						values, highlighting the range of water consumption within crop zones. By focusing on
+						agricultural areas, the figure allows for a more targeted analysis of how efficiently water is
+						being used in the context of crop production.
+					</p>
+
+					<img src="{{ settings.MEDIA_URL }}{{ job }}/eta_crop_hist.png" alt="" style="width: 45%;">
+					<img src="{{ settings.MEDIA_URL }}{{ job }}/eta_crop_hist2.png" alt="" style="width: 45%;">
+					<div class="alert alert-info"><span>Figure 10: </span> Histograms of ET over crop lands + plantation
+						area <button type="submit"
+						onclick="window.open('eta_histogram_data.csv')">Download table</button>
+
+
+						<!-- <img src="{{ settings.MEDIA_URL }}{{ job }}/lcbaret.png" alt="">
+					<div class="alert alert-info"><span>Figure 10: </span> Histogram of ET over crop lands + plantation -->
+
+					</div>
+
+
+				</section>
+
+
+				<section id="precipitation-title" class="mb-5">
+					<h2>Precipitation</h2>
+					<hr class="notop">
+					<p class="description">
+						For estimating precipitation, data from the India Meteorological Department (IMD) is used. The
+						mean precipitation (P) over the scheme during the assessment season is {{ stats.p }} mm.
+						<!-- ranging from X mm in XXXX to Y mm in XXXX.  -->
+						Figure 11 shows the spatial distribution of precipitation over the study area, with the values
+						representing the average precipitation during the assessment season from {{stats.st_yr}} to
+						{{stats.end_yr}}.
+					</p>
+
+
+
+					<div style="{{ stats.webImg_style }}">
+						<img style="height: 100%; width: auto; justify-self: center" src="{{ settings.MEDIA_URL }}{{ job }}/pcp.png" alt="">
+					</div>
+					<div class="alert alert-info"><span>Figure 11: </span> Mean seasonal Precipitation map ({{ stats.pcp
+						}})<button type="submit"
+							onclick="window.open('{{ settings.MEDIA_URL }}{{ job }}/PCP.tif')">Download
+							data</button></div>
+
+					<p class="description">
+						The Figure 12 displays the total annual precipitation for each year from {{stats.st_yr}}
+						to {{stats.end_yr}},
+						with each bar divided to highlight the portion of precipitation that occurred during the
+						assessment season. This visual representation enables a clear comparison of overall
+						precipitation each year, while emphasizing the contribution of the assessment season to the
+						total rainfall. It helps in understanding seasonal rainfall patterns and their role in
+						influencing water availability and crop water demands within the study area.
+					</p>
+
+
+					<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpbar1.png" alt="">
+					<div class="alert alert-info">
+						<span>Figure 12: </span> Total annual P and P
+						of assessment season from {{ stats.st_yr }} to {{ stats.end_yr }} <br />
+
+					</div>
+
+
+
+					{% if stats.plots_width > stats.plots_height %}
+					<div class="row">
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_01.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_02.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_03.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_04.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_05.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_06.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_07.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_08.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_09.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_10.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_11.png" alt="">
+						</div>
+						<div class="col-4">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_12.png" alt="">
+						</div>
+
+					</div>
+					{% else %}
+					<div class="row">
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_01.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_02.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_03.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_04.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_05.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_06.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_07.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_08.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_09.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_10.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_11.png" alt="">
+						</div>
+						<div class="col-3">
+							<img src="{{ settings.MEDIA_URL }}{{ job }}/pcpm_imd_avg_12.png" alt="">
+						</div>
+
+					</div>
+					{% endif %}
+
+					<div class="alert alert-info"><span>Figure 13: </span> Monthly average precipitation from January to
+						December </div>
+
+
+					<div class="alert alert-info"><span>Table 2</span> The average precipitation (P), actual
+						evapotranspiration (ETa), ET Blue (ETb) & reference ET (ETr) in mm
+						during assessment season of {{stats.st_yr}} - {{stats.end_yr}} <button type="submit"
+							onclick="window.open('Table1.csv')">Download table</button> </div>
+					<div class="table_container">
+						<table class="table table-striped" id="csv1Root"></table>
+					</div>
+
+					<div class="alert alert-info"><span>Table 3</span> The average precipitation (P), actual
+						evapotranspiration (ETa) & ET Blue (ETb) in km<sup>3</sup> during assessment
+						season of {{stats.st_yr}} - {{stats.end_yr}} <button type="submit"
+							onclick="window.open('Table2.csv')">Download table</button> </div>
+					<div class="table_container">
+						<table class="table table-striped" id="csv2Root"></table>
+					</div>
+
+					<img src="{{ settings.MEDIA_URL }}{{ job }}/monthlyetabar.png" alt="">
+					<div class="alert alert-info"><span>Figure 14: </span> Monthly ETa and P distribution over the study area </div>
+
+
+
+
+				</section>
+
+
+
+
+
+
+
+				<section id="waterp-titl" class="mb-5">
+					<h2>Water and land Productivity</h2>
+					<hr class="notop">
+
+
+					<p class="description">
+						The biomass production over different land cover types in the study area was
+						estimated using the Total Biomass Production (TBP) data obtained from the Copernicus
+						Global Land service. TBP represents the overall growth rate or dry biomass increase
+						of the vegetation and is directly related to ecosystem Net Primary Productivity
+						(NPP), however with units customized for agro-statistical purposes (kg/ha/day). The
+						10 days product were downloaded and aggregated at monthly scale.
+						The WP indicator gives an estimate about the production per unit of water use. In
+						this case seasonal TBP is used representing the overall biomass growth rate. The
+						biomass water productivity was computed using the below formula: <br>
+						<br>
+						<i>Seasonal WPb = Seasonal TBP / Seasonal ETa</i><br>
+						<br>
+						<em>Figure 16 & 17</em> shows the spatial distribution of TBP & WPb respectively
+						over cropland computed from averaged seasonal maps for the period {{stats.st_yr}} -
+						{{stats.end_yr}}.
+
+						TBP
+						map in <em>Figure 16</em> uses a dark brown-white-green representing lower-mid-high
+						biomass production in kg/ha. Water productivity is mapped with a red to green
+						gradient, red areas represents lower WPb and green areas represents higher WPb.
+						<br>
+						The seasonal mean TBP and WPb over cropland for the period {{stats.st_yr}} - {{stats.end_yr}} can
+						be
+						downloaded <button type="submit" onclick="window.open('wpbtable.csv')">here</button>.
+					</p>
+					<div style="{{ stats.webImg_style }}">
+						<img style="height: 100%; width: auto; justify-self: center" src="{{ settings.MEDIA_URL }}{{ job }}/dmp.png" alt="">
+					</div>
+					<div class="alert alert-info"><span>Figure 16: </span> Seasonal TBP (Kg/ha) over cropland <button
+							type="submit" onclick="window.open('{{ settings.MEDIA_URL }}{{ job }}/DMP.tif')">Download
+							data</button></div>
+					<div style="{{ stats.webImg_style }}">
+						<img style="height: 100%; width: auto; justify-self: center" src="{{ settings.MEDIA_URL }}{{ job }}/wpdmp.png" alt="">
+					</div>
+					<div class="alert alert-info"><span>Figure 17: </span> Seasonal Water Productivity (Kg/m<sup>3</sup>)
+						map over cropland <button type="submit"
+							onclick="window.open('{{ settings.MEDIA_URL }}{{ job }}/WPDMP.tif')">Download
+							data</button></div>
+
+
+				</section>
+
+
+
+				<section id="adequacy" class="mb-5">
+					<h2>Adequacy </h2>
+					<hr class="notop">
+
+					<p class="description">
+						Mapping adequacy of water over cropland provide insights about lack of water availability
+						spatially and support investment decisions that aim at improving equity in service delivery
+						across the cropped area. In this analysis the maximum ETa computed from the univariate
+						distribution of ETa over the cropland was used following the formula:
+						<br>
+						<br>
+						<i>Adequacy = ETa / ETp (%)</i> <br>
+
+						<br>
+						Where ETp is the 98 percentile of ETa over representative class. Figure 24 shows the spatial
+						distribution of WDI over the cropland.
+					</p>
+					<div style="{{ stats.webImg_style }}">
+
+						<img style="height: 100%; width: auto; justify-self: center" src="{{ settings.MEDIA_URL }}{{ job }}/adeq.png" alt="">
+					</div>
+					<div class="alert alert-info"><span>Figure 18: </span> Adequcy over cropland in study area <button
+							type="submit" onclick="window.open('{{ settings.MEDIA_URL }}{{ job }}/adeq.tif')">Download
+							data</button></div>
+
+
+
+
+
+				</section>
+
+				<section id="equity" class="mb-5">
+
+
+
+					<h2>Equity </h2>
+					<hr class="notop">
+
+					<p class="description">
+						Equity in irrigation service delivery is assessed by evaluating the uniformity of water
+						distribution across agricultural lands. To measure this, we use the metric 1−CV of actual
+						evapotranspiration (ETa) for each agricultural land use class, where CV is the coefficient of
+						variation. A higher value of 1−CV indicates more equitable water distribution, as it reflects
+						lower variability in ETa, while a lower value suggests uneven water distribution, leading to
+						potential water stress in certain areas.
+						<br>
+						<br>
+						The line chart compares the equity of irrigation service delivery from {{stats.st_yr}} to
+						{{stats.end_yr}} by plotting
+						1−CV of ETa during the assessment season for each year. This visualization helps track the
+						progress toward more equitable water management over time, highlighting improvements or
+						inconsistencies in irrigation services across agricultural lands.
+
+
+					</p>
+					<img src="{{ settings.MEDIA_URL }}{{ job }}/equity.png" alt="">
+					<div class="alert alert-info"><span>Figure 19: </span> Line chart for Equity </div>
+
+
+
+				</section>
+
+
+
+				<section id="climate_change" class="mb-5">
+					<h2>Climate Change future projections (2020 - 2060)</h2>
+					<hr class="notop">
+
+					<p class="description">
+
+						In this section, future trends of annual air temperature and precipitation were
+						analyzed using climate change projection data extracted for the {{ area }}. The
+						period considered for the trend analysis is 2020 to 2060. Future climate simulation
+						data provided by the Coupled Model Intercomparison Project (CMIP) under World
+						Climate Research Programme (WCRP) is used for the trend analysis. CMIP is developed
+						as a multi-institutional project to better understand past, present and future
+						climate changes arising from natural, unforced variability or in response to changes
+						in radiative forcing in a multi-model context. CMIP6 consists of the “runs” from
+						around 100 distinct climate models being produced across 49 different modelling
+						groups.<br>
+						For this analysis, data from the <a
+							href="https://gmd.copernicus.org/articles/12/4823/2019/gmd-12-4823-2019.html"><em>Canadian
+								Earth System Model version 5 (CanESM5)</em></a> model is used. CanESM5 is a
+						global model developed to simulate historical climate change and variability, to
+						make centennial scale projections of future climate, and to produce initialized
+						seasonal and decadal. <br>
+						Further trends of air temperature and precipitation under two Shared Socio-economic
+						Pathways (SSP’s) scenarios are reported.The SSPs scenarios are complex,
+						incorporating a range from very ambitious mitigation to ongoing growth in emissions.
+						The most ambitious mitigation scenario was specifically designed to align with the
+						low end of the Paris Agreement global temperature goal of holding the increase in
+						global temperature to well below 2°C above pre-industrial levels, and pursuing
+						efforts to limit the increase to 1.5°C.<br>
+						<br>
+						In this analysis, two scenarios are used: <br>
+						<br>
+						<b>SSP5-8.5</b> - Very high GHG (GreenHouse Gas) emissions and CO2 emissions triple
+						by 2075 <br>
+						<b>SSP2-4.5</b> - where scenario is intermediate GHG emissions and CO2 emissions
+						around current levels until 2050, then falling but not reaching net zero by 2100.
+						<br>
+						<br>
+						A detailed overview on ssp scenarios are given <a
+							href="https://climate-scenarios.canada.ca/?page=cmip6-overview-notes"><em>here</em></a>.
+						<br>
+						<br>
+						For {{ area }}, under <b>SSP5-8.5</b> trend in air temperature is reported to be
+						<b>{{ stats.t3 }}</b> with reported slope of <b>{{ stats.sl3 }}</b> Degree Celsius
+						(see <em>Figure 20</em>). <br>
+
+						Under <b>SSP2-4.5</b> trend in air temperature is reported to be <b>{{ stats.t1
+							}}</b> with reported slope of <b>{{ stats.sl1 }}</b> Degree Celsius (see
+						<em>Figure 21</em>). <br>
+
+						For {{ area }}, under <b>SSP5-8.5</b> trend in precipitation is reported to be <b>{{
+							stats.t4 }}</b> with reported slope of <b>{{ stats.sl4 }}</b> mm/year (see
+						<em>Figure 22</em>). <br>
+
+						Under <b>SSP2-4.5</b> trend in precipitation is reported to be <b>{{ stats.t2 }}</b>
+						with reported slope of <b>{{ stats.sl2 }}</b> mm/year (see <em>Figure 23</em>).<br>
+
+
+					</p>
+
+					<img src="{{ settings.MEDIA_URL }}{{ job }}/figt3.png" style="width: 40%;" alt="">
+
+
+					<img src="{{ settings.MEDIA_URL }}{{ job }}/figt1.png" style="width: 40%;" alt="">
+					<div class="alert alert-info">
+						<span>Figure 20 and 21: </span> Yearly deviations from 2015-2020 mean for air
+						temperature under SSP-5 8.5 and SSP-2 4.5 respectively.
+
+					</div>
+
+
+
+
+					<img src="{{ settings.MEDIA_URL }}{{ job }}/figt4.png" style="width: 40%;" alt="">
+					<img src="{{ settings.MEDIA_URL }}{{ job }}/figt2.png" style="width: 40%;" alt="">
+
+
+
+					<div class="alert alert-info">
+						<span>Figure 22 and 23: </span> Yearly deviations from 2015-2020 mean for
+						precipitation under SSP-5 8.5 and SSP-4 2.5 respectively.
+
+					</div>
+					<p>
+						Trends were computed using Sen’s slope and its significance were tested using
+						Mannkendal tests. A 5 year running mean was applied to the time series.
+					</p>
+
+				</section>
+
+
+
+
+
+
+				<section id="data-title" class="mb-5">
+					<h2>Data sources </h2>
+					<hr class="notop">
+
+					<p class="description">
+						Open access remote sensing datasets were used to estimate the relevant metrics
+						related to consumptive water use in the study area. For the estimates of water
+						consumption, Precipitation (P) and Actual EvapoTranspiration (ETa) datasets were
+						used at varying spatial resolutions. <br>
+						<br>
+
+						The land cover type information in the study area is derived from the <a href="https://www.nrsc.gov.in/EO_LULC_Application/page_1" target="_blank"> Remote Sensing Centre (NRSC)</a> under the Natural Resources Census program of ISRO, using Land Use Land Cover (LULC) maps. These maps provide detailed insights into seasonal agricultural activities and overall land use patterns across the country. The information is generated at different scales for various purposes, in this report Land Use and Land Cover - 1:250,000 Scale has been used. This process utilizes data from the AWiFS sensor onboard Resourcesat-1, 2, and 2A satellites. Since the 2004-05 crop year, annual maps have been generated to monitor agricultural activities and estimate the net sown area at the regional level. These maps focus on three major agricultural seasons: Kharif, Rabi, and Zaid. The LULC-250K data is publicly available on the <a href="https://bhuvan-app1.nrsc.gov.in/thematic/thematic/index.php" target="_blank">Bhuvan portal</a>. <br>
+						<br>
+						In this analysis, DEM data from the Japan Aerospace Exploration Agency (JAXA) were
+						used to understand the topography of the basin. The ALOS World 3D - 30m (AW3D30) is
+						generated from images collected using the Panchromatic Remote-sensing Instrument for
+						Stereo Mapping (PRISM) aboard the Advanced Land Observing Satellite (ALOS) from 2006
+						to 2011. The data is open access and free to use for any scientific studies. <br>
+						<br>
+
+						In this analysis, the ETa data is sourced from the FAO WaPOR (Water Productivity through Open access of Remotely sensed derived data) v3 global product. This dataset provides, near real-time information on ETa at a 300m spatial resolution, which is crucial for assessing water use efficiency in agricultural areas. 
+						<br>
+					
+						<br>
+						ETr data is provided by the United States Geological Survey (USGS) at 1 degree
+						spatial resolution and computed using the Penman-Monteith equation as explained in
+						<a href="https://www.fao.org/3/x0490e/x0490e00.htm">FAO 56 paper (Allen et al,
+							1998)</a>.
+					</p>
+
+					<div class="alert alert-info"><span>Table 6</span> Open access data sources used in this analysis
+					</div>
+					<div class="table_container">
+						<table class="table table-striped" id="csv6Root"></table>
+					</div>
+
+				</section>
+
+
+				<section id="copyright" class="mb-5">
+
+					<h2>Copyright </h2>
+					<hr class="notop">
+					<p>
+						© 2024 International Bank for Reconstruction and Development / The World Bank <br />
+						1818 H Street NW<br />
+						Washington DC 20433<br />
+						Telephone: 202-473-1000<br />
+						Internet: <span style="color: #e27434;">www.worldbank.org</span><br />
+						<br />
+
+
+						This work is a product of the staff of The World Bank with external contributions.
+						The findings, interpretations,
+						and conclusions expressed in this work do not necessarily reflect the views of The
+						World Bank, its Board of
+						Executive Directors, or the governments they represent. <br />
+
+						The World Bank does not guarantee the accuracy, completeness, or currency of the
+						data included in this work and
+						does not assume responsibility for any errors, omissions, or discrepancies in the
+						information, or liability with
+						respect to the use of or failure to use the information, methods, processes, or
+						conclusions set forth. The
+						boundaries,
+						colors, denominations, links/footnotes and other information shown in this work do
+						not imply any judgment on the
+						part of The World Bank concerning the legal status of any territory or the
+						endorsement or acceptance of such
+						boundaries. The citation of works authored by others does not mean the World Bank
+						endorses the views expressed by
+						those authors or the content of their works. <br />
+
+						Nothing herein shall constitute or be construed or considered to be a limitation
+						upon or waiver of the privileges
+						and immunities of The World Bank, all of which are specifically reserved.
+					</p> <br />
+
+					<h2>Rights and Permissions</h2>
+					<p>
+						The material in this work is subject to copyright. Because The World Bank encourages
+						dissemination of its
+						knowledge,
+						this work may be reproduced, in whole or in part, for noncommercial purposes as long
+						as full attribution to this
+						work is given.<br />
+						Any queries on rights and licenses, including subsidiary rights, should be addressed
+						to World Bank Publications,
+						The
+						World Bank Group, 1818 H Street NW, Washington, DC 20433, USA; fax: 202-522-2625;
+						e-mail:
+						<span style="color: #e27434;">pubrights@worldbank.org.</span>
+					</p>
+
+				</section>
+
+
+
+
+
+			</div>
+		</div>
+	</div>
+
+
+
+
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.9.0/build/ol.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.2.0/papaparse.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+<script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js'></script>
+<script src="https://kit.fontawesome.com/80bacdb160.js" crossorigin="anonymous"></script>
+<script src="/static/js/font-awesome-all.min.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+
+
+	document.querySelectorAll('.scrollspy-link a').forEach(anchor => {
+		anchor.addEventListener('click', function (e) {
+			e.preventDefault();
+			const target = document.querySelector(this.getAttribute('href'));
+			const offset = 10; // Adjust this value based on your header height
+
+			window.scrollTo({
+				top: target.offsetTop - offset,
+				behavior: 'smooth'
+			});
+		});
+	});
+
+
+	// this function create for page scroll and when screen scroll down on page referesh in both case code properly work that's why make this function
+	function scrollTop() {
+		// 500 -> This is the value in px of the distance to be scrolled for the 'scroll-to-top' button to show-up
+		if ($(window).scrollTop() > 500) {
+			$(".backToTopBtn").addClass("active");
+		} else {
+			$(".backToTopBtn").removeClass("active");
+		}
+	}
+	$(function () {
+		// show and hide btn
+		scrollTop();
+		$(window).on("scroll", scrollTop);
+
+		// body scroll on btn click
+		$(".backToTopBtn").click(function () {
+			$("html, body").animate({ scrollTop: 0 }, 1);
+			return false;
+		});
+	});
+
+
+
+	class TableCsv {
+		/**
+		 * @param {HTMLTableElement} root The table element which will display the CSV data.
+		 */
+		constructor(root) {
+			this.root = root;
+		}
+
+		/**
+		 * Clears existing data in the table and replaces it with new data.
+		 *
+		 * @param {string[][]} data A 2D array of data to be used as the table body
+		 * @param {string[]} headerColumns List of headings to be used
+		 */
+		update(data, headerColumns = []) {
+			this.clear();
+			this.setHeader(headerColumns);
+			this.setBody(data);
+		}
+
+
+		/**
+		 * Clears all contents of the table (incl. the header).
+		 */
+		clear() {
+			this.root.innerHTML = "";
+		}
+
+		/**
+		 * Sets the table header.
+		 *
+		 * @param {string[]} headerColumns List of headings to be used
+		 */
+		setHeader(headerColumns) {
+			this.root.insertAdjacentHTML(
+				"afterbegin",
+				`
+				<thead id="head">
+					<tr>
+						${headerColumns.map((text) => `<th scope="col">${text}</th>`).join("")}
+					</tr>
+				</thead>
+			`
+			);
+		}
+
+		/**
+		 * Sets the table body.
+		 *
+		 * @param {string[][]} data A 2D array of data to be used as the table body
+		 */
+		setBody(data) {
+			const rowsHtml = data.map((row) => {
+				return `
+					<tr>
+						${row.map((text) => `<td id="data">${text}</td>`).join("")}
+					</tr>
+				`;
+			});
+
+			this.root.insertAdjacentHTML(
+				"beforeend",
+				`
+				<tbody>
+					${rowsHtml.join("")}
+				</tbody>
+			`
+			);
+		}
+	}
+
+
+	const summary_csvFile = '{{ settings.MEDIA_URL }}{{ job }}/Table_summary.csv';
+	const summary_csvFileInput = summary_csvFile.toString();
+	const summary_tableRoot = document.querySelector("#summary_table_root");
+	const summary_tableCsv = new TableCsv(summary_tableRoot);
+
+
+	Papa.parse(summary_csvFile, {
+		delimiter: ",",
+		download: true,
+		skipEmptyLines: true,
+		complete: (results) => {
+			summary_tableCsv.update(results.data.slice(1), results.data[0]);
+		}
+	});
+
+
+
+	const csv1File = '{{ settings.MEDIA_URL }}{{ job }}/Table1.csv';
+	const csv1FileInput = csv1File.toString();
+	const table1Root = document.querySelector("#csv1Root");
+	const table1Csv = new TableCsv(table1Root);
+
+
+	Papa.parse(csv1File, {
+		delimiter: ",",
+		download: true,
+		skipEmptyLines: true,
+		complete: (results) => {
+			table1Csv.update(results.data.slice(1), results.data[0]);
+		}
+	});
+
+	const csv2File = '{{ settings.MEDIA_URL }}{{ job }}/Table2.csv';
+	const csv2FileInput = csv2File.toString();
+	const table2Root = document.querySelector("#csv2Root");
+	const table2Csv = new TableCsv(table2Root);
+
+
+	Papa.parse(csv2File, {
+		delimiter: ",",
+		download: true,
+		skipEmptyLines: true,
+		complete: (results) => {
+			table2Csv.update(results.data.slice(1), results.data[0]);
+		}
+	});
+
+	const csv3File = '{{ settings.MEDIA_URL }}{{ job }}/Table3.csv';
+	const csv3FileInput = csv3File.toString();
+	const table3Root = document.querySelector("#csv3Root");
+	const table3Csv = new TableCsv(table3Root);
+
+
+	Papa.parse(csv3File, {
+		delimiter: ",",
+		download: true,
+		skipEmptyLines: true,
+		complete: (results) => {
+			table3Csv.update(results.data.slice(1), results.data[0]);
+		}
+	});
+
+	const csv4File = '{{ settings.MEDIA_URL }}{{ job }}/Table4.csv';
+	const csv4FileInput = csv4File.toString();
+	const table4Root = document.querySelector("#csv4Root");
+	const table4Csv = new TableCsv(table4Root);
+
+
+	Papa.parse(csv4File, {
+		delimiter: ",",
+		download: true,
+		skipEmptyLines: true,
+		complete: (results) => {
+			table4Csv.update(results.data.slice(1), results.data[0]);
+		}
+	});
+
+	const csv6File = '/static/data/datasource.csv';
+	const csv6FileInput = csv6File.toString();
+	const table6Root = document.querySelector("#csv6Root");
+	const table6Csv = new TableCsv(table6Root);
+
+
+	Papa.parse(csv6File, {
+		delimiter: ",",
+		download: true,
+		skipEmptyLines: true,
+		complete: (results) => {
+			table6Csv.update(results.data.slice(1), results.data[0]);
+		}
+	});
+
+	// var center = ol.proj.transform([{{stats.centx}}, {{stats.centy}}], 'EPSG:4326', 'EPSG:3857');
+	// var extent = ol.proj.transformExtent([{{stats.w}}, {{stats.s}}, {{stats.e}}, {{stats.n}}], 'EPSG:4326', 'EPSG:3857');
+
+	var center = ol.proj.transform([{{stats.centx}}, {{stats.centy}}], 'EPSG:4326', 'EPSG:3857');
+	var extent = ol.proj.transformExtent([{{stats.w}}, {{stats.s}}, {{stats.e}}, {{stats.n}}], 'EPSG:4326', 'EPSG:3857');
+
+
+
+	var StatesStyle = new ol.style.Style({
+		fill: new ol.style.Fill({
+			color: 'rgba(100, 100, 100, 0.2)',
+		}),
+		stroke: new ol.style.Stroke({
+			color: '#000000',
+			width: 4,
+		}),
+		text: new ol.style.Text({
+			font: '12px Calibri,sans-serif',
+			fill: new ol.style.Fill({
+				color: '#000',
+			}),
+			stroke: new ol.style.Stroke({
+				color: '#fff',
+				width: 6,
+			}),
+		}),
+	})
+
+
+	var vectorLayer = new ol.layer.Vector({
+		source: new ol.source.Vector({
+			url: 'bound.geojson',
+			format: new ol.format.GeoJSON(),
+		}),
+		name: 'bounds',
+		style: StatesStyle
+
+	});
+
+	var canalLayer = new ol.layer.Vector({
+		source: new ol.source.Vector({
+			url: 'canals.geojson',
+			format: new ol.format.GeoJSON(),
+		}),
+		name: 'canals',
+		style: new ol.style.Style({
+			stroke: new ol.style.Stroke({
+				color: '#0883c9',
+				width: 2,
+			}),
+
+		})
+
+	});
+
+	var searchResultSource = new ol.source.Vector();
+
+	var view = new ol.View({
+		center: center,
+		zoom: 0,
+	});
+
+	var map = new ol.Map({
+		layers: [
+			new ol.layer.Tile({
+				source: new ol.source.XYZ({
+					url: 'https://mt{0-3}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}',
+					attributions: ['&copy; <a href="https://www.google.com/maps">Google</a>']
+				}),
+			}),
+			canalLayer,
+			vectorLayer,
+			
+		],
+		target: 'map',
+		view: view,
+	});
+	map.getView(view).fit(extent, map.getSize());
+
+
+
+
+
+
+
+</script>
+
+
+</html>
